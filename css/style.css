@@ -1,8 +1,10 @@
 #test 
 {
   border: #000 3px solid;
+  border-radius: 25px;
   padding: 40px 40px 40px 40px;
   margin: 60px 90px 0px ;
+  background-color: #bbbbbb;
 }
 
 p 
@@ -14,11 +16,66 @@ p
 {
   padding: 20px;
   max-width: 1800px;
+  height: 200px;
   border-radius: 20px;
-  background-color: #000;
+  background-color: #a1d6e2;
 }
 
 body 
 {
-  background-color: #fff
+  background-color: #bbbbbb;
 }
+
+div h2 
+{
+  color: #fff;
+  text-align: center;
+  font-family: Century Gothic, sans-serif;
+}
+
+div p 
+{
+  text-align: center;
+  color: #fff;
+  font-family: Century Gothic, sans-serif;
+  font-size: 18px;
+}
+
+h2,h3 
+{
+  font-family: Century Gothic, sans-serif;
+}
+
+button 
+{
+  border-radius: 25px;
+  width: 100px;
+  background-color: #8d8d8d;
+
+
+}
+
+button p 
+{
+  color: #fff;
+  font-family: Century Gothic, sans-serif;
+  text-align: center;
+
+}
+
+button: hover 
+{
+  background-color: #fff;
+}
+
+button #restart 
+{
+  margin: 20px 20px 20px 20px;
+  clear: right;
+}
+
+button #rank 
+{
+  margin: 20px 20px 20px 20px;
+}
+
