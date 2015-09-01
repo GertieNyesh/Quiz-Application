@@ -1,0 +1,24 @@
+#test 
+{
+  border: #000 3px solid;
+  padding: 40px 40px 40px 40px;
+  margin: 60px 90px 0px ;
+}
+
+p 
+{
+  margin: 40px;
+}
+
+#top 
+{
+  padding: 20px;
+  max-width: 1800px;
+  border-radius: 20px;
+  background-color: #000;
+}
+
+body 
+{
+  background-color: #fff
+}
