@@ -1,4 +1,4 @@
-//variables
+ //variables
 var pos = 0,
   test,
   test_status,
@@ -8,11 +8,14 @@ var pos = 0,
   chA,
   chB,
   chC,
-  score = 300;
+  score = 0;
   correct = 0;
+  total_seconds = 60 * 5;
+  minutes = parseInt(total_seconds/60);
+  seconds = parseInt(total_seconds%60);
 
 //Firebase
-var ref = new Firebase("https://sheshequiz.firebaseio.com");
+var ref = new Firebase("https://sheshequiz.firebaseio.com/score");
  
 
 var questions = [
@@ -39,32 +42,43 @@ function renderQuestion () {
   if (pos >= questions.length) {
     test.innerHTML = "<h2>You got "+ correct +" of " + questions.length +" questions correct. Your score is " + score +"</h2>"
     elem("test_status").innerHTML = "Test Completed";
-    test.innerHTML += "<button id ='rank' onclick = 'database()'>See Ranking</button>      "
+    test.innerHTML += "<input id ='name' type ='text'<label>Please Enter your name and submit score:   <label>"
+    test.innerHTML += "<button id ='score' onclick = 'database()'>Submit Score</button>      "
+    test.innerHTML += "<button id ='rank' onclick = 'rank()'>See Rank</button>"
     pos = 0;
     correct =0
+    score = 300;
     test.innerHTML += "<button id = 'restart' onclick = 'renderQuestion()'>Restart</button>"
     return false;
   }
 
+  
   elem("test_status").innerHTML = "<h2>Question " +(pos + 1) + " of " + questions.length + "</h2>";
   question = questions[pos][0];
   chA = questions[pos][1];
   chB = questions[pos][2];
   chC = questions[pos][3];
-  test.innerHTML = "<h3>"+ question +"</h3>";
-  test.innerHTML += "<input type ='radio' name = 'choices' value = 'A'>" + chA + "<br>"
-  test.innerHTML += "<input type ='radio' name = 'choices' value = 'B'>" + chB + "<br>"
-  test.innerHTML += "<input type ='radio' name = 'choices' value = 'C'>" + chC + "<br><br>"
-  test.innerHTML += "<button onclick = 'checkAnswer()'><p>Submit Answer</p></button>"
+  test.innerHTML = "<h3>"+ question +"</h3><br><br>";
+
+  test.innerHTML += "<input type ='radio' name = 'choices' value = 'A'>  <label>" + chA + "</label><br><br>"
+
+  test.innerHTML += "<input type ='radio' name = 'choices' value = 'B'>  <label>" + chB + "</label><br><br>"
+
+  test.innerHTML += "<input type ='radio' name = 'choices' value = 'C'>  <label>" + chC + "</label><br><br>"
+
+  test.innerHTML += "<button id ='submit' onclick = 'checkAnswer()'><p>Submit Answer</p></button>"
 }
 
 function checkAnswer() {
   choices = document.getElementsByName("choices");
 
   for (var i = 0; i < choices.length; i++) {
+
+  
     if (choices[i].checked) {
       choice = choices[i].value;
     }
+
   }
 
   if (choice === questions[pos][4]) {
@@ -76,9 +90,57 @@ function checkAnswer() {
   renderQuestion();
 }
 
-function database() {
-  ref.push({score: score})
+
+//Timer function
+function timer() {
+  elem("check-time").innerHTML = "Time left: " + minutes + "minutes " + seconds + "seconds"
+
+  if (total_seconds <= 0) {
+    setTimeout('submit()', 1)
+  }
+
+  else {
+    total_seconds = total_seconds - 1;
+    minutes = parseInt(total_seconds/60);
+    seconds = parseInt(total_seconds%60);
+    setTimeout('timer()', 1000);
+  }
 }
 
+setTimeout('timer()', 1000);
+
+//function after time ends
+function submit() {
+  pos = 12;
+  renderQuestion();
+}
+
+//Posting to database function
+function database() {
+  $(function() {
+     var name = $("#name").val() || "anon";
+  })
+   
+
+  
+  ref.push({name: name, score: score, time: Firebase.ServerValue.TIMESTAMP});
+  
+}
+
+//Displaying top ten scores function
+function rank() {
+  ref.orderByChild("score").limitToLast(10).on("child_added", function(snapshot) {
+    //test.innerHTML = "<p> The list" + snapshot.val() + "is here</p>"
+   var data = (snapshot.val());
+   console.log(data);
+
+   if (data.score) {
+    // console.log(data.name + data.score);
+
+       test.innerHTML += "<h2> name:   " + data.name + "    score: " + data.score + "</h2>"
+   }
+
+  });
+}
 
 window.addEventListener ("load", renderQuestion, false);
