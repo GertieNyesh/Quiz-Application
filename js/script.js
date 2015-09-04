@@ -31,6 +31,7 @@ function elem (x) {
   return document.getElementById(x);
 }
 
+
 //Timer function
 function timer() {
   elem("check-time").innerHTML = "<h2>Time left: " + minutes + "minutes " + seconds + "seconds</h2>"
