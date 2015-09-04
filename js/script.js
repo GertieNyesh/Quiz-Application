@@ -1,17 +1,16 @@
-
- //variables
+//variables
 var pos = 0,
   score = 0;
   correct = 0;
-  total_seconds = 60 * 1;
+  total_seconds = 60 * 2;
   minutes = parseInt(total_seconds/60);
   seconds = parseInt(total_seconds%60);
 
-//Firebase refernces
+//Firebase references
 var ref = new Firebase("https://sheshequiz.firebaseio.com/score");
 var refTwo = new Firebase("https://sheshequiz.firebaseio.com/answers");
  
-
+//Questions stored in an array
 var questions = [
       ["What started WWI?", "I don't know", "Assasination of Heir to the Austrian throne", "Invasion of Poland"],
       ["Who were the Allies in WWI?", "Britain France United States Russia Italy", "Germany Japan", "Africa Asia"],
@@ -26,10 +25,31 @@ var questions = [
       ["When did the Battle of Bulge happen?", "1914-1915", "1944-1945", "Who Knows"]
 ];
 
+
+//Returns the html element required
 function elem (x) {
   return document.getElementById(x);
 }
 
+//Timer function
+function timer() {
+  elem("check-time").innerHTML = "<h2>Time left: " + minutes + "minutes " + seconds + "seconds</h2>"
+
+  if (total_seconds <= 0) {
+    setTimeout('submit()', 1)
+  }
+
+  else {
+    total_seconds = total_seconds - 1;
+    minutes = parseInt(total_seconds/60);
+    seconds = parseInt(total_seconds%60);
+    setTimeout('timer()', 1000);
+  }
+}
+
+  setTimeout('timer()', 1000);
+
+//Function that runs immediately the page is loaded. It is the main function.
 function renderQuestion () {
   var test = elem("test");
 
@@ -39,15 +59,12 @@ function renderQuestion () {
     test.innerHTML += "<p id = 'name'>Please Enter name and Submit score:  </p><input id ='nametext' type ='text'></input><br><br>"
     test.innerHTML += "<button id ='scores' onclick = 'database()'><p id = 'score'>Submit Score</p></button>      "
     test.innerHTML += "<button id ='ranks' onclick = 'rank()'><p id = 'rank'>See Rank</p></button>"
-
-    // pos = 0;
-    // score = 0;
-    // correct = 0;
     
+    //Re-initialize timer variables for the next restart
     total_seconds = 0;
     minutes = parseInt(total_seconds/60);
     seconds = parseInt(total_seconds%60);
-    test.innerHTML += "<button id = 'restart' onclick = 'restart()' onclick ='timer()'><p id ='start'>Restart</p></button>"
+    test.innerHTML += "<button id = 'restart' onclick = 'restart()' ><p id ='start'>Restart</p></button>"
     
     return false;
   }
@@ -70,7 +87,7 @@ function renderQuestion () {
 }
 
 
-
+//Checks the radio button value submitted and compares it with the value on firebase. Increments for every correct ans
 function checkAnswer() {
 
   var choices = document.getElementsByName("choices");
@@ -105,27 +122,6 @@ refTwo.once("value", function(snapshot) {
   renderQuestion();
 }
 
-
-//Timer function
-function timer() {
-  elem("check-time").innerHTML = "<h2>Time left: " + minutes + "minutes " + seconds + "seconds</h2>"
-
-  if (total_seconds <= 0) {
-    setTimeout('submit()', 1)
-  }
-
-  else {
-    total_seconds = total_seconds - 1;
-    minutes = parseInt(total_seconds/60);
-    seconds = parseInt(total_seconds%60);
-    setTimeout('timer()', 1000);
-  }
-}
-
-  setTimeout('timer()', 1000);
-
-
-
 //function after time ends
 function submit() {
   pos = 12;
@@ -138,7 +134,7 @@ function restart() {
   score = 0;
   correct = 0;
 
-  total_seconds = 60 * 1;
+  total_seconds = 60 * 2;
   minutes = parseInt(total_seconds/60);
   seconds = parseInt(total_seconds%60);
   setTimeout('timer()', 1000);
@@ -161,7 +157,7 @@ function database() {
 
 //Ranking the scores function
 function rank() {
-  ref.orderByChild("score").on("child_added", function(snapshot) {
+  ref.orderByChild("score").limitToLast(10).on("child_added", function(snapshot) {
     //test.innerHTML = "<p> The list" + snapshot.val() + "is here</p>"
    var data = (snapshot.val());
    console.log(data);

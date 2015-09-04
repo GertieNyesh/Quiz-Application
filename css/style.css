@@ -1,7 +1,7 @@
 .container 
 {
    
-  padding: 40px 40px 40px 40px;
+  padding: 20px 20px 20px 20px;
   margin: 0 auto;
   
 }
@@ -110,98 +110,3 @@
 }
 
 
-
-/*
-
-.top p 
-{
-  margin: 40px;
-  color: #fff;
-
-}
-
-.top 
-{
-  padding: 20px;
-  max-width: 1800px;
-  height: 200px;
-  
-  background-color: #004d40;
-}
-
-.container h2 
-{
-  color: #000;
-}
-
-body 
-{
-  background-color: #bbbbbb;
-}
-
-div h2 
-{
-  color: #000;
-  text-align: center;
-  font-family: "Robto"
-  font-weight: bold;
-  font-size: 2em;
-}
-
-#top p 
-{
-  text-align: center;
-  color: #fff;
-  font-family: Century Gothic, sans-serif;
-  font-size: 18px;
-}
-
-h2,h3 
-{
-  font-family: Copperplate Gothic Light, sans-serif;;
-}
-
-button 
-{
-  border-radius: 25px;
-  width: 100px;
-  background-color: #004d40;
-
-
-}
-
-#submit p 
-{
-  color: #fff;
-  font-family: Century Gothic, sans-serif;
-  text-align: center;
-
-}
-
-button: hover 
-{
-  background-color: #fff;
-}
-
-button #restart 
-{
-  margin: 20px 20px 20px 20px;
-  clear: right;
-}
-
-button #rank 
-{
-  margin: 20px 20px 20px 20px;
-}
-
-h2 #test-status 
-{
-  margin: 0 auto;
-}
-
-label 
-{
-  font-size: 20px;
-}
-
-*/
